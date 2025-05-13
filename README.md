@@ -17,5 +17,15 @@ Created A Responsive Tour & Traveil Agency Website Design Using HTML / CSS / JS 
 
 Ref. to original wbesite template: [https://github.com/GNiruthian/Europe-Travel-Website-html-css-js]
 
+Deployed projects: 
+
+GCE: http://34.31.48.194
+
+GKE: http://34.122.97.160:80
+
+Cloud Run: https://euroweb-853608535203.us-central1.run.app
+
+App Engine: https://carlosvalencia-dev.uc.r.appspot.com/
+
 
 Thank you for using this repository. 
