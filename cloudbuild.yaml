@@ -30,14 +30,6 @@ steps:
 images:
 - 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA'
 
-privatePoolV1Config:
-  networkConfig:
-    egressOption: NO_PUBLIC_EGRESS
-    peeredNetwork: 'projects/carlosvalencia-dev/global/networks/workers-private-vpc'
-    peeredNetworkIpRange: '192.0.2.0/24'
-  workerConfig:
-    diskSizeGb: '500'
-    machineType: e2-standard-2
 
 options:
   logging: CLOUD_LOGGING_ONLY
