@@ -32,8 +32,8 @@ images:
 
 
 options:
-  pool:
-    name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/workerp1'
+  # pool:
+    # name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/workerp1'
   logging: CLOUD_LOGGING_ONLY
 
 # Optional: Define substitutions for better flexibility
