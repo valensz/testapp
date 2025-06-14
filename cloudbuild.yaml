@@ -1,5 +1,2 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  options:
-    logging: CLOUD_LOGGING_ONLY
-# ... rest of your trigger configuration
