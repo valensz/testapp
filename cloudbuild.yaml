@@ -15,7 +15,7 @@ steps:
     - '--image'
     - 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA'
     - '--region'
-    - 'SERVICE_REGION'
+    - 'us-central1'
 images:
 - 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA'
 options:
