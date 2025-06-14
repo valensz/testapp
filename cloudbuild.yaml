@@ -1,8 +1,5 @@
-# ... other trigger configurations
-build:
-  dockerfile: # This indicates it's using a Dockerfile
-    # ... Dockerfile specific settings like path, args etc.
-  # You need to add or modify the 'options' here:
+steps:
+- name: 'gcr.io/cloud-builders/docker'
   options:
     logging: CLOUD_LOGGING_ONLY
 # ... rest of your trigger configuration
