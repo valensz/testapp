@@ -18,3 +18,5 @@ steps:
     - 'SERVICE_REGION'
 images:
 - 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA'
+options:
+    logging: CLOUD_LOGGING_ONLY
