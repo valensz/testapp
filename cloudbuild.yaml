@@ -30,39 +30,6 @@ steps:
 images:
 - 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA'
 
-steps:
-- name: 'gcr.io/cloud-builders/git'
-  # --- CORRECT WAY TO SET PROXY ENVIRONMENT VARIABLES ---
-
-  entrypoint: 'bash'
-  args:
-  - '-c'
-  - |
-    echo "Proxy settings applied via 'env' for this step."
-    echo "HTTP_PROXY: http://10.128.0.2:8888"
-    echo "HTTPS_PROXY: http://10.128.0.2:8888"
-    echo "NO_PROXY: NO_PROXY"
-
-    git config --global http.proxy "http://10.128.0.2:8888"
-    git config --global https.proxy "http://10.128.0.2:8888"
-
-    echo "Attempting to clone the public repository: https://github.com/valensz/testapp.git"
-    git clone https://github.com/valensz/testapp.git /workspace/testapp
-
-    echo "Repository cloned successfully. Listing contents:"
-    ls -la /workspace/testapp
-
-- name: 'ubuntu' 
-
-  entrypoint: 'bash'
-  args:
-  - '-c'
-  - |
-    echo "Running commands in the second step with proxy..."
-    cd /workspace/testapp
-    echo "Placeholder for actual build/test commands on testapp."
-    cat requirements.txt
-
 options:
   pool:
     name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/workerp1'
