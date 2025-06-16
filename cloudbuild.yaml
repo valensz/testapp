@@ -39,4 +39,4 @@ options:
 # Optional: Define substitutions for better flexibility
 # substitutions:
 #   _LOCATION: us-central1
-#   _SERVICE_NAME: testcont
+#   _SERVICE_NAME: testcont.
