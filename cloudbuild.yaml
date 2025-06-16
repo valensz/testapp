@@ -33,24 +33,18 @@ images:
 steps:
 - name: 'gcr.io/cloud-builders/git'
   # --- CORRECT WAY TO SET PROXY ENVIRONMENT VARIABLES ---
-  env:
-  - 'HTTP_PROXY=http://10.128.0.2:8888'
-  - 'HTTPS_PROXY=http://10.128.0.2:8888'
-  # CRITICAL: Ensure NO_PROXY covers internal GCP services and your VPC ranges
-  - 'NO_PROXY=localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local,.local,metadata.google.internal'
-  # --- END PROXY ENV VARS ---
-  
+
   entrypoint: 'bash'
   args:
   - '-c'
   - |
     echo "Proxy settings applied via 'env' for this step."
-    echo "HTTP_PROXY: $HTTP_PROXY"
-    echo "HTTPS_PROXY: $HTTPS_PROXY"
-    echo "NO_PROXY: $NO_PROXY"
+    echo "HTTP_PROXY: http://10.128.0.2:8888"
+    echo "HTTPS_PROXY: http://10.128.0.2:8888"
+    echo "NO_PROXY: NO_PROXY"
 
-    git config --global http.proxy "$HTTP_PROXY"
-    git config --global https.proxy "$HTTPS_PROXY"
+    git config --global http.proxy "http://10.128.0.2:8888"
+    git config --global https.proxy "http://10.128.0.2:8888"
 
     echo "Attempting to clone the public repository: https://github.com/valensz/testapp.git"
     git clone https://github.com/valensz/testapp.git /workspace/testapp
@@ -59,13 +53,7 @@ steps:
     ls -la /workspace/testapp
 
 - name: 'ubuntu' 
-  # --- REMEMBER TO RE-APPLY PROXY ENVIRONMENT VARIABLES FOR EACH STEP IF NEEDED ---
-  env:
-  - 'HTTP_PROXY=http://10.128.0.2:8888'
-  - 'HTTPS_PROXY=http://10.128.0.2:8888'
-  - 'NO_PROXY=localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local,.local,metadata.google.internal'
-  # --- END PROXY ENV VARS ---
-  
+
   entrypoint: 'bash'
   args:
   - '-c'
