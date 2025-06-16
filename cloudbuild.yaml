@@ -2,14 +2,14 @@ steps:
 # Build the image
 - id: 'build-image'
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA', '.']
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA', '.']
   env: ['DOCKER_BUILDKIT=1'] # Optional: Enable Docker BuildKit
   timeout: '5m' # Optional: Set a timeout for the build step
 
 # Push the image to Artifact Registry
 - id: 'push-image'
   name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA']
+  args: ['push', 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA']
   timeout: '2m' # Optional: Set a timeout for the push step
 
 # Deploy image to Cloud Run
@@ -21,14 +21,14 @@ steps:
     - 'deploy'
     - 'testcont' # Using hardcoded service name, consider using a substitution if it varies
     - '--image'
-    - 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA'
+    - 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA'
     - '--region'
     - 'us-central1' # Using hardcoded region, consider using a substitution if it varies
     # Add any other Cloud Run flags you might need, e.g., --platform managed, --allow-unauthenticated, --memory, --cpu, etc.
   timeout: '5m' # Optional: Set a timeout for the deployment step
 
 images:
-- 'us-central1-docker.pkg.dev/carlosvalencia-dev/continous/demoimg/testcont:$COMMIT_SHA'
+- 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA'
 
 
 options:
