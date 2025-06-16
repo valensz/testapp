@@ -30,11 +30,65 @@ steps:
 images:
 - 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA'
 
+steps:
+- name: 'gcr.io/cloud-builders/git' # Use the Cloud Build Git builder
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    # --- PROXY CONFIGURATION START ---
+    # Set proxy environment variables for all commands in this step.
+    # Use 'http://' prefix for both HTTP_PROXY and HTTPS_PROXY with Tinyproxy.
+    export HTTP_PROXY="http://10.128.0.2:8888"
+    export HTTPS_PROXY="http://10.128.0.2:8888"
+
+    # Define NO_PROXY to prevent internal Google Cloud traffic from going through the proxy.
+    # CRITICAL for accessing Secret Manager, GCS, Metadata service, etc.
+    # Adjust 10.0.0.0/8 if your VPC uses a different large private range.
+    export NO_PROXY="localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local,.local,metadata.google.internal"
+    # --- PROXY CONFIGURATION END ---
+
+    echo "Proxy settings applied for this step."
+    echo "HTTP_PROXY: $HTTP_PROXY"
+    echo "HTTPS_PROXY: $HTTPS_PROXY"
+    echo "NO_PROXY: $NO_PROXY"
+
+    # Configure Git to use the proxy for both HTTP and HTTPS
+    git config --global http.proxy "$HTTP_PROXY"
+    git config --global https.proxy "$HTTPS_PROXY"
+
+    echo "Attempting to clone the public repository: https://github.com/valensz/testapp.git"
+    git clone https://github.com/valensz/testapp.git /workspace/testapp
+
+    echo "Repository cloned successfully. Listing contents:"
+    ls -la /workspace/testapp
+
+- name: 'ubuntu' # Example: a subsequent step to build or test the application
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    # --- PROXY CONFIGURATION START (re-apply for each step if needed) ---
+    export HTTP_PROXY="http://10.128.0.2:8888"
+    export HTTPS_PROXY="http://10.128.0.2:8888"
+    export NO_PROXY="localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local,.local,metadata.google.internal"
+    # --- PROXY CONFIGURATION END ---
+
+    echo "Navigating into the cloned repository to run build commands..."
+    cd /workspace/testapp
+
+    # Placeholder for your actual build commands.
+    # For a 'testapp.git' which is a simple Python app, you might do:
+    # pip install -r requirements.txt
+    # python main.py # (or whatever the main script is)
+    echo "Placeholder for actual build/test commands on testapp."
+    cat requirements.txt # Example: show contents of a file
 
 options:
-  # pool:
-    # name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/workerp1'
+  pool:
+    name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/workerp1'
   logging: CLOUD_LOGGING_ONLY
+  egressOption: NO_PUBLIC_EGRESS
 
 # Optional: Define substitutions for better flexibility
 # substitutions:
