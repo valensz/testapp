@@ -32,13 +32,13 @@ images:
 
 steps:
 - name: 'gcr.io/cloud-builders/git'
-  # The 'env' field directly sets environment variables for this step.
-  # These variables will be available to all commands run within this step.
+  # --- CORRECT WAY TO SET PROXY ENVIRONMENT VARIABLES ---
   env:
   - 'HTTP_PROXY=http://10.128.0.2:8888'
   - 'HTTPS_PROXY=http://10.128.0.2:8888'
-  # Ensure NO_PROXY is correctly set for your internal network ranges and GCP services.
+  # CRITICAL: Ensure NO_PROXY covers internal GCP services and your VPC ranges
   - 'NO_PROXY=localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local,.local,metadata.google.internal'
+  # --- END PROXY ENV VARS ---
   
   entrypoint: 'bash'
   args:
@@ -49,8 +49,6 @@ steps:
     echo "HTTPS_PROXY: $HTTPS_PROXY"
     echo "NO_PROXY: $NO_PROXY"
 
-    # Configure Git to use the proxy for both HTTP and HTTPS.
-    # Git checks these environment variables, but explicit config ensures it.
     git config --global http.proxy "$HTTP_PROXY"
     git config --global https.proxy "$HTTPS_PROXY"
 
@@ -60,11 +58,13 @@ steps:
     echo "Repository cloned successfully. Listing contents:"
     ls -la /workspace/testapp
 
-- name: 'ubuntu' # Another step, requiring re-setting env vars if needed
-  env: # Re-set proxy variables for this step
+- name: 'ubuntu' 
+  # --- REMEMBER TO RE-APPLY PROXY ENVIRONMENT VARIABLES FOR EACH STEP IF NEEDED ---
+  env:
   - 'HTTP_PROXY=http://10.128.0.2:8888'
   - 'HTTPS_PROXY=http://10.128.0.2:8888'
   - 'NO_PROXY=localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local,.local,metadata.google.internal'
+  # --- END PROXY ENV VARS ---
   
   entrypoint: 'bash'
   args:
@@ -73,7 +73,7 @@ steps:
     echo "Running commands in the second step with proxy..."
     cd /workspace/testapp
     echo "Placeholder for actual build/test commands on testapp."
-    cat requirements.txt # Example: show contents of a file
+    cat requirements.txt
 
 options:
   pool:
