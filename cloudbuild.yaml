@@ -10,7 +10,7 @@ steps:
 - id: 'push-image'
   name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA']
-  timeout: '2m' # Optional: Set a timeout for the push step
+  #timeout: '2m' # Optional: Set a timeout for the push step
 
 # Deploy image to Cloud Run
 - id: 'deploy-to-cloud-run'
@@ -25,7 +25,7 @@ steps:
     - '--region'
     - 'us-central1' # Using hardcoded region, consider using a substitution if it varies
     # Add any other Cloud Run flags you might need, e.g., --platform managed, --allow-unauthenticated, --memory, --cpu, etc.
-  timeout: '5m' # Optional: Set a timeout for the deployment step
+  #timeout: '5m' # Optional: Set a timeout for the deployment step
 
 images:
 - 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA'
@@ -33,6 +33,7 @@ images:
 options:
   pool:
     name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/workerp1'
+  
   logging: CLOUD_LOGGING_ONLY
 
 # substitutions:
