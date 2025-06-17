@@ -31,8 +31,8 @@ images:
 - 'us-central1-docker.pkg.dev/carlosvalencia-dev/gh-updates/imgfromgit:$COMMIT_SHA'
 
 options:
-  #pool:
-    #name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/workerp1'
+  pool:
+    name: 'projects/carlosvalencia-dev/locations/us-central1/workerPools/private-pool-with-nat'
   
   logging: CLOUD_LOGGING_ONLY
 
